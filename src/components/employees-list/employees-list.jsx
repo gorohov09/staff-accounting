@@ -6,10 +6,13 @@ const EmployeesList = ({data}) => {
 
     //Перебераем маccив и каждый элемент превращаем в компонент. Реузультат - массив компонентов EmployeesListItem
     const elements = data.map(item => {
+        const {id, ...itemProps} = item; //Деструктуризация по остаточному принципу
         return (
-            <EmployeesListItem {...item} /> //name={item.name} salary={item.salary} == {...item}
+            <EmployeesListItem key={id} {...itemProps} /> //name={item.name} salary={item.salary} == {...item}
         )
     });
+
+    console.log(elements);
 
     return (
         <ul className="app-list list-group">

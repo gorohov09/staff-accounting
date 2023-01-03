@@ -20,6 +20,7 @@ class App extends Component {
                 { name: 'Sonya A.', salary: 300, increase: false, id: 4 }
             ]
         }
+        this.maxId = 5;
     }
 
     deleteItem = (id) => {
@@ -27,6 +28,26 @@ class App extends Component {
 
             return {
                 data: data.filter(elem => elem.id !== id)
+            }
+        })
+    }
+
+    addItem = (name, salary) => {
+
+        this.setState(({data}) => {
+
+            const employee = {
+                name: name,
+                salary: salary,
+                increase: false,
+                id: this.maxId++
+            }
+    
+            const clonedData = data.map(item => {return {...item}});
+            clonedData.push(employee);
+
+            return {
+                data: clonedData
             }
         })
     }
@@ -47,7 +68,9 @@ class App extends Component {
                     onDelete={this.deleteItem}
                     />
     
-                <EmployeesAddForm />
+                <EmployeesAddForm 
+                    onAdd={this.addItem}
+                    />
             </div>
         );
     }

@@ -19,6 +19,11 @@ class EmployeesAddForm extends Component {
 
     onHandleSubmit = (e) => {
         e.preventDefault();
+
+        //Проверка валидности введенных данных в форму
+        if (this.state.name.length <= 3 || this.state.salary < 0)
+            return;
+
         this.props.onAdd(this.state.name, this.state.salary)
 
         this.setState({

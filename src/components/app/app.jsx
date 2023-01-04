@@ -18,7 +18,8 @@ class App extends Component {
                 { name: 'Igor M.', salary: 200, increase: false, rise: false, id: 2 },
                 { name: 'Nikita U.', salary: 400, increase: true, rise: false, id: 3 },
                 { name: 'Sonya A.', salary: 300, increase: false, rise: false, id: 4 }
-            ]
+            ],
+            term: ''
         }
         this.maxId = 5;
     }
@@ -64,9 +65,28 @@ class App extends Component {
         }))
     }
 
+    //Поиск сотрудников
+    searchEmployee = (items, term) => {
+        if (term.length === 0) {
+            return items;
+        }
+
+        return items.filter(item => {
+            return item.name.indexOf(term) > -1 //Фильтрация по вхождению term в item.name
+        })
+    }
+
+    onUpdateSearch = (term) => {
+        this.setState({
+            term: term
+        })
+    }
+
     render() {
+        const {data, term} = this.state;
         const totalCount = this.state.data.length;
         const increaseCount = this.state.data.filter(item => item.increase).length;
+        const visibleData = this.searchEmployee(data, term);
 
         return (
             <div className="app">
@@ -76,12 +96,14 @@ class App extends Component {
                     />
     
                 <div className="search-panel">
-                    <SearchPanel />
+                    <SearchPanel 
+                        onUpdateSearch={this.onUpdateSearch}
+                        />
                     <AppFilter />
                 </div>
     
                 <EmployeesList 
-                    data={this.state.data}
+                    data={visibleData}
                     onDelete={this.deleteItem}
                     onToggleProp={this.onToggleProp}
                     />

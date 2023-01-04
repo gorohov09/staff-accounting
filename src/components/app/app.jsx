@@ -14,10 +14,10 @@ class App extends Component {
         super(props);
         this.state = {
             data: [
-                { name: 'John S.', salary: 800, increase: true, id: 1 },
-                { name: 'Igor M.', salary: 200, increase: false, id: 2 },
-                { name: 'Nikita U.', salary: 400, increase: true, id: 3 },
-                { name: 'Sonya A.', salary: 300, increase: false, id: 4 }
+                { name: 'John S.', salary: 800, increase: true, rise: true, id: 1 },
+                { name: 'Igor M.', salary: 200, increase: false, rise: false, id: 2 },
+                { name: 'Nikita U.', salary: 400, increase: true, rise: false, id: 3 },
+                { name: 'Sonya A.', salary: 300, increase: false, rise: false, id: 4 }
             ]
         }
         this.maxId = 5;
@@ -40,6 +40,7 @@ class App extends Component {
                 name: name,
                 salary: salary,
                 increase: false,
+                rise: false,
                 id: this.maxId++
             }
     
@@ -52,11 +53,27 @@ class App extends Component {
         })
     }
 
+    onToggleProp = (id, prop) => {
+        this.setState(({data}) => ({
+            data: data.map(item => {
+                if (item.id === id) {
+                    return {...item, [prop]: !item[prop]}
+                }
+                return item;
+            })
+        }))
+    }
+
     render() {
+        const totalCount = this.state.data.length;
+        const increaseCount = this.state.data.filter(item => item.increase).length;
 
         return (
             <div className="app">
-                <AppInfo />
+                <AppInfo 
+                    totalCountEmployees={totalCount}
+                    increaseCountEmployees={increaseCount}
+                    />
     
                 <div className="search-panel">
                     <SearchPanel />
@@ -66,6 +83,7 @@ class App extends Component {
                 <EmployeesList 
                     data={this.state.data}
                     onDelete={this.deleteItem}
+                    onToggleProp={this.onToggleProp}
                     />
     
                 <EmployeesAddForm 

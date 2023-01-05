@@ -10,7 +10,6 @@ const AppFilter = (props) => {
 
     const buttons = buttonsData.map(({name, label}) => {
         const active = props.filter === name;
-        console.log(active);
         return (
             <button 
                 className={active ? "btn btn-light" : "btn btn-outline-light"}
